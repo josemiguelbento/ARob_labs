@@ -44,8 +44,7 @@ switch option
                 setupBaseModel; 
             case 2
                 cd simulation; 
-                %setupHoverSim;
-                setupHoverSimHeight;
+                setupHoverSim;
             case 3
                 cd simulation; 
                 setupWPTrackingSim;
@@ -64,8 +63,7 @@ switch option
         switch option2
             case 1
                 cd wifiControl; 
-                %setupHover;
-                setupHoverHeight; 
+                setupHover;
                 % Building model using RTWT. Install rtwt if not installed 
                 % using 'rtwintgt -setup'
                 % rtwbuild('ARDroneHover');

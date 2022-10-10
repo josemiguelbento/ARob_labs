@@ -1,10 +1,11 @@
 time = datetime;
 fmt = "yyyy_MM_dd_HH_mm_ss";
 %file_name = string(time,fmt)+'.mat';
-file_name = 'pitch_3s_step_a_0_2';
+file_name = 'pitch_w_10_a_0_5';
 
-if isfile(strcat('./data/sim_',file_name,'.mat'))
-    disp("This file already exists - choose a different name")
+if isfile(filename)
+    print("This file already exists - do you want another one?")
+    input(' ');
 end
 
 if exist('sim_data','var') == 1

@@ -38,4 +38,6 @@ addpath ../lib/ ;
 sampleTime = 0.03;%0.065; 
 
 %%
-ARDroneHover ; 
+%ARDroneHover ; 
+ARDroneHoverHeight;
+%ARDroneHoverPitch;

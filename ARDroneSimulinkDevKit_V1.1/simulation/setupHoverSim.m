@@ -46,7 +46,8 @@ simDT = 0.005 ;
 
 %%
 % Loading Simulink model of ARDrone
-ARDroneHoverSim ;
-
+%ARDroneHoverSim ;
+ARDroneHoverSimHeight ;
+%ARDroneHoverSimPitch ;
 
 
