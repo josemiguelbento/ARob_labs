@@ -1,0 +1,40 @@
+time = datetime;
+fmt = "yyyy_MM_dd_HH_mm_ss";
+file_name = string(time,fmt)+'.mat';
+
+if exist('sim_data','var') == 1
+    results = sim_data;
+    file_name = 'sim_'+file_name;
+elseif exist('test_data','var') == 1
+    results = test_data;
+    file_name = 'test_'+file_name;
+else
+    return
+end
+data = struct;
+data.time = results.time;
+data.roll = results.signals.values(:,1);
+data.pitch = results.signals.values(:,2);
+data.yaw = results.signals.values(:,3);
+data.u = results.signals.values(:,4);
+data.v = results.signals.values(:,5);
+data.h_dot = results.signals.values(:,6);
+data.X_e = results.signals.values(:,7);
+data.Y_e = results.signals.values(:,8);
+data.h = results.signals.values(:,9);
+data.yaw_ref = results.signals.values(:,10);
+data.h_ref = results.signals.values(:,11);
+data.X_e_ref = results.signals.values(:,12);
+data.Y_e_ref = results.signals.values(:,13);
+
+file_name = './data/'+file_name;
+save(file_name,'data')
+
+clear data
+if exist('sim_data','var') == 1
+    clear sim_data;
+elseif exist('test_data','var') == 1
+    clear test_data;
+else
+    return
+end
