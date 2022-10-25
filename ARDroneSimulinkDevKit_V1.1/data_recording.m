@@ -1,9 +1,9 @@
 time = datetime;
 fmt = "yyyy_MM_dd_HH_mm_ss";
 %file_name = string(time,fmt)+'.mat';
-file_name = 'pitch_3s_step_a_0_2';
+file_name = 'pitch_5s_step_a_0_15_v2';
 
-if isfile(strcat('./data/sim_',file_name,'.mat'))
+if isfile(strcat('./data/test_',file_name,'.mat'))
     disp("This file already exists - choose a different name")
 end
 
@@ -33,6 +33,10 @@ data.X_e_ref = results.signals.values(:,12);
 data.Y_e_ref = results.signals.values(:,13);
 data.fly = results.signals.values(:,14);
 data.enable = results.signals.values(:,15);
+data.roll_ref = results.signals.values(:,16);
+data.pitch_ref = results.signals.values(:,17);
+data.yaw_ref = results.signals.values(:,18);
+data.h_dot_ref = results.signals.values(:,19);
 
 file_name = strcat('./data/',file_name);
 save(file_name,'data')

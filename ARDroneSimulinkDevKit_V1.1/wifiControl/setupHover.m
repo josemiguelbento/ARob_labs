@@ -39,5 +39,5 @@ sampleTime = 0.03;%0.065;
 
 %%
 %ARDroneHover ; 
-ARDroneHoverHeight;
-%ARDroneHoverPitch;
+%ARDroneHoverHeight;
+ARDroneHoverPitch;
