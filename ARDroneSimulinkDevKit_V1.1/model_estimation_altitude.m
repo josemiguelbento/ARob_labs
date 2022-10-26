@@ -13,8 +13,9 @@ Legend=cell(length(file),1);
 for i = 1:length(file)
     aux1 = split(file(i),'height_');
     aux2 = split(aux1(2),'.mat');
-    
-    newStr = strrep(aux2(1),'_',' ');
+    aux3 = split(aux2(1),'_h');
+    aux4 = strrep(aux3(1),'k_','k = ');
+    newStr = strrep(aux4,'_','.');
     
     Legend{i}=newStr;
     

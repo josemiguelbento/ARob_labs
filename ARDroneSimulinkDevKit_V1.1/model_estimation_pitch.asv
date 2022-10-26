@@ -60,11 +60,9 @@ end
 
 figure(1)
 legend(Legend,'Location','southwest')
-title({'Bode plot of matlab system identification results', 'for several pitch step tests'})
 
 figure(2)
 legend(Legend,'Location','northeast')
-title({'Pole-zero map of matlab system identification results', 'for several pitch step tests'})
 
 %% calculating static gain from steps
 %file = ["test_pitch_3s_step_a_0_2.mat", "test_pitch_3s_step_a_0_2_v2.mat", "test_pitch_5s_step_a_0_15.mat", "test_pitch_5s_step_a_0_15_v2.mat"];
@@ -204,8 +202,10 @@ hold on
 %semilogx(freq_ang,ptp_gain_db,'x','Color','red')
 semilogx(freq_ang,ptp_gain_db,'x','Color','red')
 
-legend('fit result', 'test data')
-title('Bode plot for pitch response')
+legend('fit result', 'tdata')
+
+
+
 %bode(sys);
 
 %figure

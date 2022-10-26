@@ -1,7 +1,7 @@
 time = datetime;
 fmt = "yyyy_MM_dd_HH_mm_ss";
 %file_name = string(time,fmt)+'.mat';
-file_name = 'pitch_5s_step_a_0_15_v2';
+file_name = 'pitch_w_1_a_0_2_v3';
 
 if isfile(strcat('./data/test_',file_name,'.mat'))
     disp("This file already exists - choose a different name")
