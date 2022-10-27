@@ -22,9 +22,8 @@ for i = 1:length(file_test)
     sim(i) = load(name);
     
     
-    f1 = figure(1);
-    %f1.Position = [100 50 450 250];
-    subplot(2,2,i);
+    f1 = figure;
+    f1.Position = [100 50 450 250];
     plot(real(i).data.time(tempo_corte), real(i).data.h(tempo_corte))
     hold on
     plot(sim(i).data.time(tempo_corte), sim(i).data.h(tempo_corte))
@@ -34,8 +33,11 @@ for i = 1:length(file_test)
     ylabel('height (m)')
     xlabel('time (s)')
     xlim([15 60])
-    
+    ax2 = gca;
+
 end
+
+
 
 saturation = load('./data/test_height_k_3_h_1.mat');
 figure
@@ -83,14 +85,14 @@ for i = 1:length(file)
     Opt = tfestOptions('Display','on');
     np = [2];
     ioDelay = [0];
-    mtf(i) = tfest(fit, np,ioDelay,Opt);
+    mtf = tfest(fit, np,ioDelay,Opt);
 
     figure(1)
-    bode(mtf(i))
+    bode(mtf)
     hold on
     
     figure(2)
-    pzmap(mtf(i))
+    pzmap(mtf)
     hold on
     
 end
