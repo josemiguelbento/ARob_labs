@@ -76,29 +76,54 @@ for i = 1:length(file)
     Ts = 0.03;
     fit = iddata(y,u,Ts);
     %get(fit);
-    figure(i+2)
+    f1 = figure(1);
+    %f1.Position = [100 50 450 250];
+    subplot(2,2,i);
+    %figure(i+2)
     plot(fit)
     title(newStr)
 
     Opt = tfestOptions('Display','on');
     np = [2];
     ioDelay = [0];
-    mtf(i) = tfest(fit, np,ioDelay,Opt);
+    mtf = tfest(fit, np,ioDelay,Opt);
 
-    figure(1)
-    bode(mtf(i))
+    figure(2)
+    bode(mtf)
     hold on
     
-    figure(2)
-    pzmap(mtf(i))
+    figure(3)
+    pzmap(mtf)
     hold on
+    
+    tf_num(i,:) = mtf.Numerator;
+    tf_den(i,:) = mtf.Denominator;
+    fit_percent(i) = mtf.Report.Fit.FitPercent;
+    
+    output_sim = 0.75+lsim(mtf,a(i).data.h_ref(tempo_corte)-0.75,a(i).data.time(tempo_corte));
+    
+    f2 = figure(4);
+    %f1.Position = [100 50 450 250];
+    subplot(2,2,i);
+    %figure(i+2)
+    plot(a(i).data.time(tempo_corte),a(i).data.h(tempo_corte))
+    hold on
+    plot(a(i).data.time(tempo_corte),output_sim)
+    plot(a(i).data.time(tempo_corte),a(i).data.h_ref(tempo_corte))
+    legend('real','simulated','reference')
+    title(newStr)
+    xlabel('time (s)')
+    ylabel('height (m)')
+    
     
 end
 
-figure(1)
-legend(Legend)
+
 
 figure(2)
+legend(Legend)
+
+figure(3)
 legend(Legend,'Location','northwest')
 
 %%

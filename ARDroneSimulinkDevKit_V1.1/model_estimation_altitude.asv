@@ -22,8 +22,9 @@ for i = 1:length(file_test)
     sim(i) = load(name);
     
     
-    f1 = figure;
-    f1.Position = [100 50 450 250];
+    f1 = figure(1);
+    %f1.Position = [100 50 450 250];
+    subplot(2,2,i);
     plot(real(i).data.time(tempo_corte), real(i).data.h(tempo_corte))
     hold on
     plot(sim(i).data.time(tempo_corte), sim(i).data.h(tempo_corte))
@@ -33,11 +34,8 @@ for i = 1:length(file_test)
     ylabel('height (m)')
     xlabel('time (s)')
     xlim([15 60])
-    ax2 = gca;
-
+    
 end
-
-
 
 saturation = load('./data/test_height_k_3_h_1.mat');
 figure
@@ -78,7 +76,10 @@ for i = 1:length(file)
     Ts = 0.03;
     fit = iddata(y,u,Ts);
     %get(fit);
-    figure(i+2)
+    f1 = figure(1);
+    %f1.Position = [100 50 450 250];
+    subplot(2,2,i);
+    %figure(i+2)
     plot(fit)
     title(newStr)
 
@@ -87,20 +88,40 @@ for i = 1:length(file)
     ioDelay = [0];
     mtf = tfest(fit, np,ioDelay,Opt);
 
-    figure(1)
+    figure(2)
     bode(mtf)
     hold on
     
-    figure(2)
+    figure(3)
     pzmap(mtf)
     hold on
     
+    tf_num(i,:) = mtf.Numerator;
+    tf_den(i,:) = mtf.Denominator;
+    fit_percent(i) = mtf.Report.Fit.FitPercent;
+    
+    output_sim = 0.75+lsim(mtf,a(i).data.h_ref(tempo_corte)-0.75,a(i).data.time(tempo_corte));
+    
+    f2 = figure(4);
+    %f1.Position = [100 50 450 250];
+    subplot(2,2,i);
+    %figure(i+2)
+    plot(a(i).data.time(tempo_corte),a(i).data.h(tempo_corte))
+    hold on
+    plot(a(i).data.time(tempo_corte),output_sim)
+    plot(a(i).data.time(tempo_corte),a(i).data.h_ref(tempo_corte))
+    title(newStr)
+    
+    
+    
 end
 
-figure(1)
-legend(Legend)
+
 
 figure(2)
+legend(Legend)
+
+figure(3)
 legend(Legend,'Location','northwest')
 
 %%
