@@ -10,17 +10,19 @@ sample_times = 1:6001;
 
 input_t = real.data.time(sample_times)-real.data.time(sample_times(1));
 
-accs_out(:,1) = real.data.accs(:,1)/1000;
-accs_out(:,2) = real.data.accs(:,2)/1000;
-accs_out(:,3) = real.data.accs(:,3)/1000 - 9.80665;
-%accs_out(:,3) = real.data.accs(:,3);
+
+
+accs_out(:,1) = real.data.accs(:,1)/100;
+accs_out(:,2) = real.data.accs(:,2)/100;
+%accs_out(:,3) = real.data.accs(:,3)/100 + 9.80665;
+accs_out(:,3) = real.data.accs(:,3)/100;
 
 y = accs_out;
 % conversao para rad/s
 wm = real.data.gyros/180*pi;
 
 %% simulated inputs
-sim_sin = 0;
+sim_sin = 1;
 len_t = length(input_t);
 if sim_sin
     theta_max = 24*pi/180;
@@ -29,9 +31,10 @@ if sim_sin
     f = 1/10;
 %     sig_y = 1;           % m/s^2
 %     sig_w = 1*pi/180;    % rad/s
-    sig_y = 0.05;           % m/s^2
-    sig_w = 0.05*pi/180;    % rad/s
-    bias = [2,-3,1]*pi/180; % rad/s
+    sig_y = 0.0005;           % m/s^2
+    sig_w = 0.0005*pi/180;    % rad/s
+    %bias = [2,-3,1]*pi/180; % rad/s
+    bias = [0,0,0]*pi/180; % rad/s
 
     theta = theta_max*sin(2*pi*f*input_t);
     phi = phi_max*cos(2*pi*f*input_t)+phi_CC;
@@ -114,20 +117,20 @@ end
 %% accelerometers estimated
 
 figure
-plot(input_t, accs_out(sample_times,1),input_t,ax(sample_times));
-%plot(input_t, accs_out(sample_times,1),input_t,y(sample_times,1));
+%plot(input_t, accs_out(sample_times,1),input_t,ax(sample_times));
+plot(input_t, -9.81*(-sin(theta)),input_t,ax(sample_times));
 legend('real','estimate')
 title('ax')
 
 figure
-plot(input_t, accs_out(sample_times,2),input_t,ay(sample_times));
-%plot(input_t, accs_out(sample_times,2),input_t,y(sample_times,2));
+%plot(input_t, accs_out(sample_times,2),input_t,ay(sample_times));
+plot(input_t, -9.81*cos(theta).*sin(phi),input_t,ay(sample_times));
 legend('real','estimate')
 title('ay')
 
 figure
-plot(input_t, accs_out(sample_times,3),input_t,az(sample_times));
-%plot(input_t, accs_out(sample_times,3),input_t,y(sample_times,3));
+%plot(input_t, accs_out(sample_times,3),input_t,az(sample_times));
+plot(input_t, -9.81*cos(theta).*cos(phi),input_t,az(sample_times));
 legend('real','estimate')
 title('az')
 
@@ -138,14 +141,14 @@ legend('bias x','bias y', 'bias z')
 
 %% final euler
 figure
-plot(input_t, real.data.euler(sample_times,1),input_t,phi_est(sample_times));
-%plot(input_t, phi,input_t,phi_est(sample_times));
+%plot(input_t, real.data.euler(sample_times,1),input_t,phi_est(sample_times));
+plot(input_t, phi,input_t,phi_est(sample_times));
 legend('real','estimate')
 title('roll')
 
 figure
-plot(input_t, real.data.euler(sample_times,2),input_t,theta_est(sample_times));
-%plot(input_t, theta,input_t,theta_est(sample_times));
+%plot(input_t, real.data.euler(sample_times,2),input_t,theta_est(sample_times));
+plot(input_t, theta,input_t,theta_est(sample_times));
 legend('real','estimate')
 title('pitch')
 
