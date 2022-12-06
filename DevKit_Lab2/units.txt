@@ -1,0 +1,7 @@
+phys_accs mm/s^2
+(1)x amarelo
+(2)y azul
+(3)z vermelho
+
+1a rotaçao em torno de x positivo - azul mais negativo, vermelho menos negativo
+
