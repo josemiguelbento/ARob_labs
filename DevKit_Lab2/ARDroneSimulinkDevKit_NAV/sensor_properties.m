@@ -406,30 +406,29 @@ for i = 1:length(file_test)
     % Final plots ----------------------------------------------
     figure
     %f1.Position = [100 50 450 250];
-    plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,2))
+    plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,2)*180/pi)
     hold on
-    plot(real(i).data.time(tempo_corte), pitch_raw)
-    plot(t,pitch_gyro)
-    plot(t,kalman_pitch)
+    plot(real(i).data.time(tempo_corte), pitch_raw*180/pi)
+    plot(t,pitch_gyro*180/pi)
+    plot(t,kalman_pitch*180/pi)
     title("Pitch")
-    legend('real','raw inclinometer','gyro integration','kalman')
-    ylabel('inclin')
-    xlabel('time (s)')
+    legend('real','raw inclinometer','gyro integration','kalman estimation', 'Location','southeast')
+    ylabel('\theta [º]')
+    xlabel('t (s)')
     
     figure
     %f1.Position = [100 50 450 250];
-    plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,1))
+    plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,1)*180/pi)
     hold on
-    plot(real(i).data.time(tempo_corte), roll_raw)
-    plot(t,roll_gyro)
-    plot(t,kalman_roll)
+    plot(real(i).data.time(tempo_corte), roll_raw*180/pi)
+    plot(t,roll_gyro*180/pi)
+    plot(t,kalman_roll*180/pi)
     title("Roll")
-    legend('real','raw inclinometer','gyro integration','kalman')
-    ylabel('inclin')
-    xlabel('time (s)')
+    legend('real','raw inclinometer','gyro integration','kalman estimation', 'Location','southwest')
+    ylabel('\phi [º]')
+    xlabel('t (s)')
     
 end
-
 
 %% 4.4
 clear real
@@ -465,8 +464,8 @@ sys1 = ss(A1,[B1 G1],C1,[D1 H1]);
 %file_test = ["dados_teste_roll_pitch_v1.mat"];
 file_test = ["dados_testeE_v0.mat"];
 
-bias1 = 0.1;
-bias2 = 0.2;
+bias1 = 6*pi/180;
+bias2 = 12*pi/180;
 
 tempo_corte = 1:6001;
 
@@ -547,39 +546,43 @@ for i = 1:length(file_test)
     pitch_gyro = 0.005*cumtrapz(real(i).data.gyros(tempo_corte,2)/180*pi+bias2);
     
     figure
-    plot(t,roll_gyro,t,pitch_gyro)
+    plot(t,roll_gyro*180/pi,t,pitch_gyro*180/pi)
     legend('Roll','Pitch')
-    title(newStr+" euler gyro int")
+    title("Estimation from gyroscope integration")
+    xlabel('t [s]')
+    ylabel('attitude [º]')
     
     figure
-    plot(t,bias1_estim,t,bias2_estim);
+    plot(t,bias1_estim*180/pi,t,bias2_estim*180/pi);
     legend('bias Roll','bias Pitch')
-    title(newStr+" bias estimated")
+    title("Bias estimation")
+    xlabel('t [s]')
+    ylabel('bias [º/s]')
     
     % Final plots ----------------------------------------------
     figure
     %f1.Position = [100 50 450 250];
-    plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,2))
+    plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,2)*180/pi)
     hold on
-    plot(real(i).data.time(tempo_corte), pitch_raw)
+    plot(real(i).data.time(tempo_corte), pitch_raw*180/pi)
     %plot(t,pitch_gyro)
-    plot(t,kalman_pitch)
+    plot(t,kalman_pitch*180/pi)
     title("Pitch")
-    legend('real','raw inclinometer','kalman')
-    ylabel('inclin')
-    xlabel('time (s)')
+    legend('real','raw inclinometer','kalman', 'Location', 'southeast')
+    ylabel('\theta [º]')
+    xlabel('t (s)')
     
     figure
     %f1.Position = [100 50 450 250];
-    plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,1))
+    plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,1)*180/pi)
     hold on
-    plot(real(i).data.time(tempo_corte), roll_raw)
+    plot(real(i).data.time(tempo_corte), roll_raw*180/pi)
     %plot(t,roll_gyro)
-    plot(t,kalman_roll)
+    plot(t,kalman_roll*180/pi)
     title("Roll")
-    legend('real','raw inclinometer','kalman')
-    ylabel('inclin')
-    xlabel('time (s)')
+    legend('real','raw inclinometer','kalman', 'Location', 'southwest')
+    ylabel('\phi [º]')
+    xlabel('t (s)')
     
 end
 

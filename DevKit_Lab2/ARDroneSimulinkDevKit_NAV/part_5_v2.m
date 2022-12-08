@@ -29,6 +29,7 @@ sim_sin = false;
 
 file_test = "dados_testeE_v0.mat";
 %file_test = "dados_teste_pitch_roll.mat";
+%file_test = "dados_testeD_v0_0_15_rad_3s.mat";
 
 name = (strcat('./data/',file_test));
 real = load(name);
