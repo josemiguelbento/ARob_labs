@@ -190,7 +190,7 @@ close all
 
 %file_test = ["dados_testeD_v0_0_15_rad_3s.mat","dados_testeD_v1_0_15_rad_3s.mat"];
 %file_test = ["dados_testeD_v0_0_15_rad_3s.mat"];
-file_test = ["dados_testeD_v0_0_15_rad_3s.mat"];
+file_test = ["dados_teste_roll_pitch_v1.mat"];
 
 tempo_corte = 1:6001;
 for i = 1:length(file_test)
@@ -235,24 +235,24 @@ for i = 1:length(file_test)
     %plot pitch raw VS real
     figure
     %f1.Position = [100 50 450 250];
-    plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,2)*180/pi)
+    plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,2))
     hold on
-    plot(real(i).data.time(tempo_corte), pitch_raw*180/pi)
+    plot(real(i).data.time(tempo_corte), pitch_raw)
     title("Pitch")
     legend('real (euler)','raw inclinometer')
-    ylabel('\theta [º]')
-    xlabel('t [s]')
+    ylabel('inclin')
+    xlabel('time (s)')
     
     %plot roll raw VS real
     figure
     %f1.Position = [100 50 450 250];
-    plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,1)*180/pi)
+    plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,1))
     hold on
-    plot(real(i).data.time(tempo_corte), roll_raw*180/pi)
+    plot(real(i).data.time(tempo_corte), roll_raw)
     title("Roll")
     legend('real (euler)','raw inclinometer')
-    ylabel('\phi [º]')
-    xlabel('t [s]')
+    ylabel('\om [º]')
+    xlabel('time (s)')
     
 end
 
