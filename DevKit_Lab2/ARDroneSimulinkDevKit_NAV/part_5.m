@@ -11,15 +11,23 @@ sample_times = 1:6001;
 input_t = real.data.time(sample_times)-real.data.time(sample_times(1));
 
 
+accs_offset(1) = mean(real.data.accs(21:121,1))/100;
+accs_offset(2) = mean(real.data.accs(21:121,2))/100;
+accs_offset(3) = mean(real.data.accs(21:121,3))/100;
+
+
+% accs_out(:,1) = real.data.accs(:,1)/100 - accs_offset(1);
+% accs_out(:,2) = real.data.accs(:,2)/100 - accs_offset(2);
+% accs_out(:,3) = real.data.accs(:,3)/100 - accs_offset(3);
 
 accs_out(:,1) = real.data.accs(:,1)/100;
 accs_out(:,2) = real.data.accs(:,2)/100;
-%accs_out(:,3) = real.data.accs(:,3)/100 + 9.80665;
 accs_out(:,3) = real.data.accs(:,3)/100;
 
 y = accs_out;
 % conversao para rad/s
-wm = real.data.gyros/180*pi;
+gyro_bias = [0,0,0];
+wm = (real.data.gyros + gyro_bias)/180*pi;
 
 %% simulated inputs
 sim_sin = 1;
@@ -27,7 +35,6 @@ len_t = length(input_t);
 if sim_sin
     theta_max = 24*pi/180;
     phi_max = 6*pi/180;
-    phi_CC = 6*pi/180;
     f = 1/10;
 %     sig_y = 1;           % m/s^2
 %     sig_w = 1*pi/180;    % rad/s
@@ -37,10 +44,10 @@ if sim_sin
     bias = [0,0,0]*pi/180; % rad/s
 
     theta = theta_max*sin(2*pi*f*input_t);
-    phi = phi_max*cos(2*pi*f*input_t)+phi_CC;
+    phi = phi_max*sin(2*pi*f*input_t);
 
     wx = -phi_max*2*pi*f*sin(2*pi*f*input_t)+sig_w*randn(len_t,1)+bias(1);
-    wy = theta_max*2*pi*f*cos(2*pi*f*input_t)+sig_w*randn(len_t,1)+bias(2);
+    wy = theta_max*2*pi*f*sin(2*pi*f*input_t)+sig_w*randn(len_t,1)+bias(2);
     wz = sig_w*randn(len_t,1)+bias(3);
 
     ax = -9.81*(-sin(theta))+sig_y*randn(len_t,1);
@@ -60,7 +67,7 @@ end
 %% 
 
 
-cov_w = [4e-3,4e-3,4e-3];
+cov_w = [4e-1,4e-1,4e-1];
 cov_bias = [1e-8,1e-8,1e-8];
 cov_y = [8e-3,8e-3,8e-3];
 
@@ -70,8 +77,8 @@ Q = diag([cov_w,cov_bias]);
 R = diag(cov_y);
 
 P = Q;
-%x_est = [y(1,1:3)';zeros(3,1)];
-x_est = zeros(6,1);
+x_est = [y(30,1:3)';zeros(3,1)];
+%x_est = zeros(6,1);
 %% Estimation loop
 
 for i = sample_times
@@ -88,26 +95,39 @@ for i = sample_times
          zeros(3),zeros(3)];
 
     % Calulate P
+    small_steps = 10;
+    for j = 1:small_steps
+        Pdot = A*P+P*A'+Q-P*C'/R*C*P;
 
-    Pdot = A*P+P*A'+Q-P*C'/R*C*P;
-    
-    %integration
-    P = P + Pdot*0.005;
-    
-    K = P*C'/R;
+        %integration
+        P = P + Pdot*0.005/small_steps;
 
-    % dynamics equation
-    x_est_dot = A*x_est+K*(y(i,:)-C*x_est);
-    
-    x_est = x_est + x_est_dot*0.005;
-    
+        K = P*C'/R;
+
+        % dynamics equation
+        x_est_dot = A*x_est+K*(y(i,:)'-C*x_est);
+
+    %     A_cont = A-K*C;
+    %     B_cont = K;
+    %     C_cont = eye(size(A_cont));
+    %     D_cont = zeros(size(B_cont));
+    %     
+    %     sys = ss(A_cont,B_cont,C_cont,D_cont);
+    %     
+    %     sysd = c2d(sys,0.005);
+    %     
+    %     x_est = lsim(sysd,y(i,:)',0.005,x_est);
+
+        x_est = x_est + x_est_dot*0.005/small_steps;
+    end
     % calculate euler
-    phi_est(i) = atan(x_est(2)/x_est(3));
-    theta_est(i) = atan(x_est(1)/sqrt(x_est(2)^2 + x_est(3)^2));
     
     ax(i) = x_est(1);
     ay(i) = x_est(2);
     az(i) = x_est(3);
+    
+    phi_est(i) = atan(ay(i)/az(i));
+    theta_est(i) = atan(ax(i)/sqrt(ay(i)^2 +az(i)^2));
     
     bias_x(i) = x_est(4);
     bias_y(i) = x_est(5);
