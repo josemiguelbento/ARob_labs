@@ -480,16 +480,16 @@ for i = 1:length(file_test)
     real(i) = load(name);
     
     
-    figure
-    %f1.Position = [100 50 450 250];
-    plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,1))
-    hold on
-    plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,2))
-    %plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,3))
-    title(newStr+" euler")
-    legend('roll','pitch')
-    ylabel('euler')
-    xlabel('time (s)')
+%     figure
+%     %f1.Position = [100 50 450 250];
+%     plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,1))
+%     hold on
+%     plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,2))
+%     %plot(real(i).data.time(tempo_corte), real(i).data.euler(tempo_corte,3))
+%     title(newStr+" euler")
+%     legend('roll','pitch')
+%     ylabel('euler')
+%     xlabel('time (s)')
     
     
     ax = real(i).data.accs(tempo_corte,1);
