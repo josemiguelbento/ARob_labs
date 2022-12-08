@@ -12,30 +12,32 @@ for i = 1:length(file_test)
     aux2 = split(aux1(2),'.mat');
     newStr = strrep(aux2(1),'_','.');
     
-    newStr = "Experiment A";
+    newStr = "Experiment A:";
     name = (strcat('./data/',file_test(i)));
     real(i) = load(name);
     
-
+    %Aceelerometers
     figure
     %f1.Position = [100 50 450 250];
     plot(real(i).data.time(tempo_corte), real(i).data.accs(tempo_corte,1))
     hold on
     plot(real(i).data.time(tempo_corte), real(i).data.accs(tempo_corte,2))
     plot(real(i).data.time(tempo_corte), real(i).data.accs(tempo_corte,3))
-    title(newStr+" accelerometer")
-    legend('accel x','accel y','accel z')
-    ylabel('accel (mm/s^2)')
-    xlabel('time (s)')
+    title(newStr+" Accelerometers")
+    legend('a_{x_B}','a_{y_B}','a_{z_B}', 'Location',  'east')
+    ylabel('a [cm/s^2]')
+    xlabel('t [s]')
+    
+    %Gyroscopes
     figure
     plot(real(i).data.time(tempo_corte), real(i).data.gyros(tempo_corte,1))
     hold on
     plot(real(i).data.time(tempo_corte), real(i).data.gyros(tempo_corte,2))
     plot(real(i).data.time(tempo_corte), real(i).data.gyros(tempo_corte,3))
-    title(newStr+" gyroscope")
-    legend('gyros x','gyros y','gyros z')
-    ylabel('ang veloc (deg/s)')
-    xlabel('time (s)')
+    title(newStr+" Gyroscopes")
+    legend('\omega_{x_B}','\omega_{y_B}','\omega_{z_B}')
+    ylabel('\omega [º/s]')
+    xlabel('t [s]')
     
     %calculations
     test = struct();
@@ -77,26 +79,28 @@ for i = 1:length(file_test)
     name = (strcat('./data/',file_test(i)));
     real(i) = load(name);
     
-
+    %Accelerometers
     figure
     %f1.Position = [100 50 450 250];
     plot(real(i).data.time(tempo_corte), real(i).data.accs(tempo_corte,1))
     hold on
     plot(real(i).data.time(tempo_corte), real(i).data.accs(tempo_corte,2))
     plot(real(i).data.time(tempo_corte), real(i).data.accs(tempo_corte,3))
-    title(newStr+" accels")
-    legend('accel x','accel y','accel z')
-    ylabel('accel (mm/s^2)')
-    xlabel('time (s)')
+    title("Experiment B: Accelerometers")
+    legend('a_{x_B}','a_{y_B}','a_{z_B}', 'Location',  'east')
+    ylabel('a [cm/s^2]')
+    xlabel('t [s]')
+    
+    %Gyroscopes
     figure
     plot(real(i).data.time(tempo_corte), real(i).data.gyros(tempo_corte,1))
     hold on
     plot(real(i).data.time(tempo_corte), real(i).data.gyros(tempo_corte,2))
     plot(real(i).data.time(tempo_corte), real(i).data.gyros(tempo_corte,3))
-    title(newStr+" gyros")
-    legend('gyros x','gyros y','gyros z')
-    ylabel('ang veloc (deg/s)')
-    xlabel('time (s)')
+    title("Experiment B: Gyroscopes")
+    legend('\omega_{x_B}','\omega_{y_B}','\omega_{z_B}')
+    ylabel('\omega [º/s]')
+    xlabel('t [s]')
     
     %calculations
     test = struct();
@@ -137,26 +141,28 @@ for i = 1:length(file_test)
     name = (strcat('./data/',file_test(i)));
     real(i) = load(name);
     
-
+    %Acelerometers
     figure
     %f1.Position = [100 50 450 250];
     plot(real(i).data.time(tempo_corte), real(i).data.accs(tempo_corte,1))
     hold on
     plot(real(i).data.time(tempo_corte), real(i).data.accs(tempo_corte,2))
     plot(real(i).data.time(tempo_corte), real(i).data.accs(tempo_corte,3))
-    title(newStr+" accels")
-    legend('accel x','accel y','accel z')
-    ylabel('acel (mm/s^2)')
-    xlabel('time (s)')
+    title("Experiment C: Accelerometers")
+    legend('a_{x_B}','a_{y_B}','a_{z_B}', 'Location',  'east')
+    ylabel('a [cm/s^2]')
+    xlabel('t [s]')
+    
+    %Gyroscopes
     figure
     plot(real(i).data.time(tempo_corte), real(i).data.gyros(tempo_corte,1))
     hold on
     plot(real(i).data.time(tempo_corte), real(i).data.gyros(tempo_corte,2))
     plot(real(i).data.time(tempo_corte), real(i).data.gyros(tempo_corte,3))
-    title(newStr+" gyros")
-    legend('gyros x','gyros y','gyros z')
-    ylabel('veloc ang')
-    xlabel('time (s)')
+    title("Experiment C: Gyroscopes")
+    legend('\omega_{x_B}','\omega_{y_B}','\omega_{z_B}')
+    ylabel('\omega [º/s]')
+    xlabel('t [s]')
     
     %calculations
     test = struct();
@@ -184,7 +190,7 @@ close all
 
 %file_test = ["dados_testeD_v0_0_15_rad_3s.mat","dados_testeD_v1_0_15_rad_3s.mat"];
 %file_test = ["dados_testeD_v0_0_15_rad_3s.mat"];
-file_test = ["dados_teste_pitch_roll.mat"];
+file_test = ["dados_teste_roll_pitch_v1.mat"];
 
 tempo_corte = 1:6001;
 for i = 1:length(file_test)
@@ -203,20 +209,20 @@ for i = 1:length(file_test)
     hold on
     plot(real(i).data.time(tempo_corte), real(i).data.accs(tempo_corte,2))
     plot(real(i).data.time(tempo_corte), real(i).data.accs(tempo_corte,3))
-    title(newStr+" accels")
-    legend('accel x','accel y','accel z')
-    ylabel('acel (mm/s^2)')
-    xlabel('time (s)')
+    title("Experiment Pitch/Roll: Accelerometers")
+    legend('a_{x_B}','a_{y_B}','a_{z_B}', 'Location',  'east')
+    ylabel('a [cm/s^2]')
+    xlabel('t [s]')
     
     figure
     plot(real(i).data.time(tempo_corte), real(i).data.gyros(tempo_corte,1))
     hold on
     plot(real(i).data.time(tempo_corte), real(i).data.gyros(tempo_corte,2))
     plot(real(i).data.time(tempo_corte), real(i).data.gyros(tempo_corte,3))
-    title(newStr+" gyros")
-    legend('gyros x','gyros y','gyros z')
-    ylabel('veloc ang')
-    xlabel('time (s)')
+    title("Experiment Pitch/Roll: Gyroscopes")
+    legend('\omega_{x_B}','\omega_{y_B}','\omega_{z_B}')
+    ylabel('\omega [º/s]')
+    xlabel('t [s]')
     
 %     figure
 %     %f1.Position = [100 50 450 250];
