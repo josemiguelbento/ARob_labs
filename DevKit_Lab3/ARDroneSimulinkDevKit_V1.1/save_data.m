@@ -1,7 +1,13 @@
 
 %% save data
-save('./data/exp_reta_v2_1_m','states')
-save('./data/exp_reta_v2_1_m_desired','desired')
+save('./data/sim_yaw_step','states')
+save('./data/sim_yaw_step_desired','desired')
+save('./data/sim_yaw_step_states_desired','states_desired')
 
 %% plot trajectory
 plot(states.signals.values(:,7),states.signals.values(:,8))
+hold on
+x_d = reshape(desired.signals.values(1,1,:),[],1);
+y_d = reshape(desired.signals.values(2,1,:),[],1);
+
+plot(x_d,y_d)
