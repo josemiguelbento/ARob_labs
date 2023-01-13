@@ -124,7 +124,7 @@ plot(x_d(d_states_time_span),y_d(d_states_time_span))
 
 axis equal
 
-title("Simulated straight line path")
+title("Simulated straight line following")
 legend('real','reference')
 ylabel('Y (m)')
 xlabel('X (m)')
