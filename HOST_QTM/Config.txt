@@ -1,0 +1,18 @@
+Qualisys Computer information:
+QualisysIP=169.254.54.27
+QualisysPort=22223
+NumberOfObjects=1
+
+Local Computer information:
+Port to use=9091
+
+Communication Type (0-TCP; 1-UDP):
+Comms=1
+
+Host Computer information (only for UDP):
+HostIP=169.254.54.40
+HostPort=9089
+
+Debug Information (Flags):
+Messages in queue=1
+Print message bytes=1
