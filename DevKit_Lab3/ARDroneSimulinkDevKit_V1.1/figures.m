@@ -1,5 +1,21 @@
 close all
 
+%% root locus yaw controller
+s = tf('s');
+
+internal_yaw_controller = 1.265/(s+5.879*10^-3);
+
+kp = 1;
+ki = 0.1;
+a = 5.879*10^-3;
+b = 1.265;
+
+cl_total_yaw_controller = b*kp*(s+ki)/(s^2+(a+kp*b)*s+b*kp*ki);
+
+ol_total_yaw_controller = (1+ki/s)*internal_yaw_controller;
+rlocus(ol_total_yaw_controller)
+
+title('Root locus for k_i = 0.1')
 %% altitude controller
 load('./data/sim_alt_step.mat')
 load('./data/sim_alt_step_desired.mat')
@@ -165,9 +181,46 @@ plot(x_d,y_d)
 axis equal
 
 title("Experimental straight line following with LOS")
-legend('real','desired')
 ylabel('Y (m)')
 xlabel('X (m)')
+
+%tracking yaw
+% yaw_d = reshape(desired.signals.values(10,1,:),[],1);
+% for i = 1:length(yaw_d)
+%     if yaw_d(i) > pi
+%         yaw_d(i) = yaw_d(i)-2*pi;
+%     end
+%     if yaw_d(i) < -pi
+%         yaw_d(i) = yaw_d(i)+2*pi;
+%     end      
+% end
+% figure
+% plot(desired.time,states.signals.values(:,3)*180/pi)
+% hold on
+% plot(desired.time,yaw_d*180/pi)
+% legend('real','reference')
+% xlim([10 30])
+% title('Yaw tracking')
+% xlabel('time (s)')
+% ylabel('yaw (deg)')
+
+[X,Y] = meshgrid(0.2:0.5:4,-1.5+0.2527:0.2:1.5+0.2527);
+%U = 0.25*X;
+%V = 0.5*Y;
+
+v_abs = 0.3;
+v_corr = 0.1;
+delta = 1;
+chi_d = atan(-(Y-0.2527)/delta);
+U = v_corr*cos(chi_d);
+V = v_corr*sin(chi_d);
+%n_div = 10;
+%arrows = 1:round(length(y_d)/n_div):length(y_d);
+%quiver(states.signals.values(arrows,7),states.signals.values(arrows,8),U(arrows),V(arrows))
+
+scale = 1.2;
+quiver(X,Y,scale*U,scale*V,'b','AutoScale','off')
+legend('real','desired','correction heading')
 
 %% circle yaw = 0 sim
 % path
@@ -307,4 +360,42 @@ arrows = 400:round(length(x_real)/n_div):length(x_real)-200;
 quiver(x_real(arrows),y_real(arrows),U(arrows),V(arrows))
 
 legend('real','desired', 'yaw', 'Location', 'southwest')
+
+%erro X Y
+time_dif = 1;
+interv_real = 335:1501;
+interv_d = round(interv_real-time_dif/0.03);
+
+%plot(x_d(round(932-time_dif/0.03)),y_d(round(932-time_dif/0.03)),'o')
+%plot(states.signals.values(932,7),states.signals.values(932,8),'x')
+
+figure
+plot(desired.time(interv_real),x_d(interv_d)-states.signals.values(interv_real,7))
+hold on
+plot(desired.time(interv_real),y_d(interv_d)-states.signals.values(interv_real,8))
+legend('X error','Y error')
+%xlim([10 46])
+title('Position error (X and Y)')
+xlabel('time(s)')
+ylabel('error (m)')
+%tracking yaw
+yaw_d = reshape(desired.signals.values(10,1,:),[],1);
+for i = 1:length(yaw_d)
+    if yaw_d(i) > pi
+        yaw_d(i) = yaw_d(i)-2*pi;
+    end
+    if yaw_d(i) < -pi
+        yaw_d(i) = yaw_d(i)+2*pi;
+    end      
+end
+figure
+plot(desired.time,states.signals.values(:,3)*180/pi)
+hold on
+plot(desired.time,yaw_d*180/pi)
+legend('real','reference')
+xlim([10 46])
+title('Yaw tracking')
+xlabel('time (s)')
+ylabel('yaw (deg)')
+
 
